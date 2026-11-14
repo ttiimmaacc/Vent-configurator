@@ -43,7 +43,15 @@ export function App() {
   // "saved" drives every document. "draft" is what the controls edit and the 3D view previews.
   const [saved, setSaved] = useState<Params>(loadParams);
   const [draft, setDraft] = useState<Params>(saved);
-  const [tab, setTab] = useState<Tab>('model');
+  // The tab is kept in the URL hash so a view can be linked to directly, e.g. #drawings.
+  const [tab, setTabState] = useState<Tab>(() => {
+    const h = location.hash.slice(1);
+    return TABS.some(([id]) => id === h) ? (h as Tab) : 'model';
+  });
+  const setTab = (t: Tab) => {
+    setTabState(t);
+    history.replaceState(null, '', t === 'model' ? location.pathname + location.search : `#${t}`);
+  };
   const shown = useMemo(() => computeDesign(saved), [saved]);
   const draftDesign = useMemo(() => computeDesign(draft), [draft]);
   const dirty = useMemo(() => JSON.stringify(draft) !== JSON.stringify(saved), [draft, saved]);

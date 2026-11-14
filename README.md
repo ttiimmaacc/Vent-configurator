@@ -1,6 +1,16 @@
 # Sauna vent configurator
 
-A browser-based parametric configurator for wooden sauna vents and louvred grilles. Change a dimension and the 3D model, drawings, cut list, stock layout, instructions and printable build plan all update from one calculation engine.
+A browser-based parametric configurator for wooden sauna vents and louvred grilles. Set the dimensions, preview the vent in 3D, then save to generate drawings, a cut list, a stock layout, instructions and a printable build plan, all from one calculation engine.
+
+**[Try the live example](https://ttiimmaacc.github.io/Vent-configurator/)**
+
+![3D model with the controls on the left](docs/screenshots/model.png)
+
+| Drawings | Build plan |
+|---|---|
+| ![Dimensioned front elevation, vertical section and louvre detail](docs/screenshots/drawings.png) | ![A4 build plan cover page](docs/screenshots/plan.png) |
+| **Cut list** | **Stock layout** |
+| ![Cut list grouped by part](docs/screenshots/cut.png) | ![Board layout with rips and crosscuts](docs/screenshots/stock.png) |
 
 ## Run it
 
@@ -18,6 +28,8 @@ npm test          # engine and geometry tests
 npm run build     # type-check and production build into dist/
 ```
 
+Every push to `main` runs the tests and publishes the build to GitHub Pages (`.github/workflows/deploy.yml`).
+
 ## What it models
 
 | | Options |
@@ -31,6 +43,13 @@ npm run build     # type-check and production build into dist/
 | Stock | Board thickness, width, length, saw kerf, end trim |
 
 Fixed grilles only. Adjustable (closable) mechanisms are not modelled yet.
+
+## Using it
+
+- **Edit, then save.** The controls edit a draft and the 3D view previews it live. Press **Save and update plans** to regenerate the drawings, cut list, stock layout, instructions, build plan and CSVs.
+- **Issues point at their inputs.** An error or warning highlights the inputs that cause it. Most errors offer a one-click fix.
+- **Presets.** Save the current settings under a name and load them later. Presets and the saved design are kept in the browser.
+- **Linkable tabs.** Add `#drawings`, `#cut`, `#stock`, `#steps` or `#plan` to the address to open a tab directly.
 
 ## Outputs
 
@@ -53,7 +72,7 @@ src/engine/      Pure TypeScript, no UI. Millimetres throughout.
   instructions.ts  Steps generated from the computed design
   drawings.ts      2D drawings projected from the same part solids
   csv.ts           CSV exports
-  engine.test.ts   Invariant tests over several hundred configurations
+  engine.test.ts   Invariant tests over several hundred configurations, including every fix
 src/ui/          React, React Three Fiber
 ```
 
@@ -79,7 +98,7 @@ Defined once in `RULES` in `design.ts` and listed in the Instructions tab:
 - Glued-up panel blanks get 20 mm extra length and 10 mm extra width.
 - Two dowels per joint when the rail is at least four dowel diameters wide, otherwise one.
 
-Validation rules R01 to R13 reject or flag designs that break these. An invalid design never produces parts; the app keeps showing the last valid one.
+Validation rules R01 to R13 reject or flag designs that break these. Each issue names the inputs behind it and, where there is one unambiguous change, a fix. An invalid design never produces parts and cannot be saved.
 
 ## Assumptions to check before cutting
 
