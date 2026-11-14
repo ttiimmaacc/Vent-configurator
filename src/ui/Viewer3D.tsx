@@ -4,28 +4,10 @@ import { Edges, OrbitControls } from '@react-three/drei';
 import * as THREE from 'three';
 import type { Design, Part, Prism } from '../engine';
 import { r1, speciesOf } from '../engine';
+import { prismGeometry, tint } from './geometry';
+import { arSupported, viewInAr } from './ar';
 
 export type ViewName = 'front' | 'rear' | 'iso';
-
-const X_BASIS = new THREE.Matrix4().makeBasis(new THREE.Vector3(0, 1, 0), new THREE.Vector3(0, 0, 1), new THREE.Vector3(1, 0, 0));
-
-function prismGeometry(pr: Prism): THREE.BufferGeometry {
-  const shape = new THREE.Shape(pr.outline.map(([a, b]) => new THREE.Vector2(a, b)));
-  for (const h of pr.holes ?? []) shape.holes.push(new THREE.Path(h.map(([a, b]) => new THREE.Vector2(a, b))));
-  const g = new THREE.ExtrudeGeometry(shape, { depth: pr.to - pr.from, bevelEnabled: false });
-  g.translate(0, 0, pr.from);
-  if (pr.axis === 'x') g.applyMatrix4(X_BASIS);
-  return g;
-}
-
-function tint(hex: string, id: string, selected: boolean): string {
-  let h = 0;
-  for (let i = 0; i < id.length; i++) h = (h * 31 + id.charCodeAt(i)) | 0;
-  const c = new THREE.Color(hex);
-  c.offsetHSL(0, 0, ((Math.abs(h) % 9) - 4) * 0.008);
-  if (selected) c.lerp(new THREE.Color('#2f6fde'), 0.55);
-  return '#' + c.getHexString();
-}
 
 function PartMesh({ part, color, offset, selected, onSelect }: { part: Part; color: string; offset: [number, number, number]; selected: boolean; onSelect: (id: string) => void }) {
   const geoms = useMemo(() => part.prisms.map(prismGeometry), [part]);
@@ -110,6 +92,15 @@ export function Viewer3D({ design, stale }: { design: Design; stale: boolean }) 
   const [explode, setExplode] = useState(0);
   const [wall, setWall] = useState(false);
   const [selected, setSelected] = useState<string | null>(null);
+  const [arState, setArState] = useState<'idle' | 'busy' | 'downloaded' | 'failed'>('idle');
+  const openAr = async () => {
+    setArState('busy');
+    try {
+      setArState((await viewInAr(design)) === 'ar' ? 'idle' : 'downloaded');
+    } catch {
+      setArState('failed');
+    }
+  };
   const color = speciesOf(design.params.species).color;
   const size = Math.max(design.overall.w, design.overall.h);
   const base = size * 0.3 + 20;
@@ -155,8 +146,27 @@ export function Viewer3D({ design, stale }: { design: Design; stale: boolean }) 
         <label className="check-inline">
           <input type="checkbox" checked={wall} onChange={(e) => setWall(e.target.checked)} /> Wall
         </label>
+        <button className="ar-btn" onClick={openAr} disabled={arState === 'busy'} title="Places the vent on a wall at real size using the iPhone or iPad camera">
+          {arState === 'busy' ? 'Preparing…' : 'View in your space'}
+        </button>
       </div>
 
+      {arState === 'downloaded' && (
+        <div className="viewer-note" role="status">
+          AR view needs Safari on an iPhone or iPad. A USDZ file of this vent was downloaded instead{arSupported() ? '' : '; open this page on your phone to place it on a wall'}.
+          <button className="link" onClick={() => setArState('idle')}>
+            Dismiss
+          </button>
+        </div>
+      )}
+      {arState === 'failed' && (
+        <div className="viewer-note" role="alert">
+          The AR model could not be created.
+          <button className="link" onClick={() => setArState('idle')}>
+            Dismiss
+          </button>
+        </div>
+      )}
       {stale && <div className="viewer-stale">Showing the last valid design. Fix the issues listed on the left to update it.</div>}
 
       <div className="viewer-info">

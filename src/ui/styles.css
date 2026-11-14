@@ -102,6 +102,8 @@ button.link:hover { text-decoration-thickness: 2px; }
 .seg button.on { background: var(--ink); color: #fff; border-color: var(--ink); }
 .slider-inline, .check-inline { display: flex; align-items: center; gap: 6px; font-size: 13px; }
 .slider-inline input { width: 120px; accent-color: var(--accent); }
+.ar-btn { padding: 5px 11px; background: var(--ink); color: #fff; border-color: var(--ink); }
+.viewer-note { position: absolute; top: 62px; left: 12px; max-width: min(380px, calc(100% - 24px)); background: #fff; border: 1px solid var(--line); border-radius: 9px; padding: 8px 12px; font-size: 12.5px; line-height: 1.45; display: grid; gap: 4px; }
 .viewer-info { position: absolute; left: 12px; bottom: 12px; display: grid; gap: 2px; background: rgba(255, 255, 255, 0.92); border: 1px solid var(--line); border-radius: 9px; padding: 8px 12px; font-size: 13px; max-width: min(360px, calc(100% - 24px)); }
 .viewer-stale { position: absolute; top: 12px; right: 12px; max-width: 260px; background: #fbf2dc; color: var(--warn); border-radius: 7px; padding: 8px 10px; font-size: 12.5px; }
 

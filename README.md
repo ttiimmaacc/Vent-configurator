@@ -49,6 +49,7 @@ Fixed grilles only. Adjustable (closable) mechanisms are not modelled yet.
 - **Edit, then save.** The controls edit a draft and the 3D view previews it live. Press **Save and update plans** to regenerate the drawings, cut list, stock layout, instructions, build plan and CSVs.
 - **Issues point at their inputs.** An error or warning highlights the inputs that cause it. Most errors offer a one-click fix.
 - **Presets.** Save the current settings under a name and load them later. Presets and the saved design are kept in the browser.
+- **View in your space.** On an iPhone or iPad in Safari, this places the vent on a wall at real size through the camera, using AR Quick Look. It shows the design as it stands when you tap; tap again after changing it. Other devices download a USDZ file of the vent instead.
 - **Linkable tabs.** Add `#drawings`, `#cut`, `#stock`, `#steps` or `#plan` to the address to open a tab directly.
 
 ## Outputs
@@ -74,6 +75,7 @@ src/engine/      Pure TypeScript, no UI. Millimetres throughout.
   csv.ts           CSV exports
   engine.test.ts   Invariant tests over several hundred configurations, including every fix
 src/ui/          React, React Three Fiber
+  ar.ts            USDZ export for AR Quick Look, real size, anchored to a wall
 ```
 
 Every output reads the one `Design` object returned by `computeDesign`. The 3D meshes, the drawings and the section view are all generated from the same part solids, so they cannot disagree.
