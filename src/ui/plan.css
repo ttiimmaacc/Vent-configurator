@@ -1,0 +1,89 @@
+/* Build plan pages. Follows "Build Plan Style Spec": A4, 12 mm margins, ink / grey / hairline / fill only, regular weight. */
+.plan {
+  --font-display: 'Helvetica Now Display', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-text: 'Helvetica Now Text', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --ink: #000000;
+  --grey: #949494;
+  --hair: #cccccc;
+  --fill: #efefef;
+  color: var(--ink);
+  font-family: var(--font-text);
+  font-weight: 400;
+  font-size: 9.5pt;
+  line-height: 1.42;
+}
+.plan * { box-sizing: border-box; font-weight: 400; font-style: normal; }
+.plan i { color: var(--grey); }
+.plan .page {
+  width: 210mm;
+  height: 297mm;
+  padding: 12mm;
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  break-after: page;
+}
+.plan .run, .plan .foot { display: flex; justify-content: space-between; font-size: 7.5pt; line-height: 1.3; color: var(--grey); }
+.plan .foot { margin-top: auto; padding-top: 3mm; }
+.plan .ink { color: var(--ink); }
+.plan .label { font-size: 7.5pt; line-height: 1.3; color: var(--grey); }
+.plan .note { font-size: 7.5pt; line-height: 1.4; color: var(--grey); margin: 2mm 0 0; }
+.plan .grey { color: var(--grey); }
+.plan .para { margin: 1.5mm 0 0; }
+
+.plan .title { font-family: var(--font-display); font-size: 26pt; line-height: 1.05; letter-spacing: -0.018em; margin: 10mm 0 0; }
+.plan .cover-title { font-family: var(--font-display); font-size: 48pt; line-height: 1; letter-spacing: -0.02em; margin: 22mm 0 0; }
+.plan .sub { font-family: var(--font-display); font-size: 14pt; line-height: 1.2; letter-spacing: -0.01em; margin-top: 2mm; }
+.plan .sect { font-family: var(--font-display); font-size: 18pt; line-height: 1.1; letter-spacing: -0.014em; margin: 7mm 0 0; }
+.plan .mat { font-family: var(--font-display); font-size: 14pt; line-height: 1.2; letter-spacing: -0.01em; margin: 7mm 0 2mm; }
+.plan .ghead, .plan .phead, .plan .sno { font-family: var(--font-display); font-size: 11pt; line-height: 1.2; }
+.plan .ghead { margin: 6mm 0 1mm; }
+
+.plan .meta { display: flex; gap: 9mm; margin-top: 4mm; }
+.plan .meta .value, .plan .strip .value { font-family: var(--font-display); font-size: 12pt; line-height: 1.2; margin-top: 0.8mm; }
+
+.plan .cover-drawing { margin-top: 8mm; display: flex; justify-content: center; }
+.plan .strip { display: flex; gap: 9mm; margin-top: 6mm; padding-top: 3mm; border-top: 1px solid var(--hair); }
+
+.plan .panels { display: grid; gap: 5mm; margin-top: 6mm; }
+.plan .panels.two { grid-template-columns: 1.25fr 1fr; }
+.plan .psub { font-size: 7.5pt; line-height: 1.3; color: var(--grey); margin-bottom: 3mm; }
+.plan .dpanel svg { font-family: var(--font-text); }
+.plan .kv { display: grid; grid-template-columns: 22mm 1fr; }
+.plan .kv > span { padding: 1.1mm 0; border-bottom: 1px solid var(--hair); font-size: 9pt; line-height: 1.3; }
+.plan .kv > span:nth-child(odd) { color: var(--grey); font-size: 7.5pt; padding-top: 1.6mm; }
+.plan .kv > span:nth-last-child(-n + 2) { border-bottom: 0; }
+
+.plan table.ptable { width: 100%; border-collapse: collapse; font-size: 9pt; line-height: 1.3; }
+.plan .ptable th { font-size: 7.5pt; color: var(--grey); text-align: left; padding: 1mm 0; border-bottom: 1px solid var(--ink); }
+.plan .ptable td { padding: 1.3mm 0; border-bottom: 1px solid var(--hair); vertical-align: top; }
+.plan .ptable tr:last-child td { border-bottom: 0; }
+.plan .ptable .n { text-align: right; padding-right: 4mm; }
+.plan .ptable td.grey { font-size: 7.5pt; line-height: 1.4; }
+
+.plan .rip { display: grid; grid-template-columns: 5mm 1fr 62mm; column-gap: 3mm; align-items: center; padding: 1mm 0; font-size: 8.5pt; line-height: 1.2; }
+.plan .bar { position: relative; height: 4.6mm; }
+.plan .bar span { position: absolute; top: 0; height: 100%; background: var(--fill); font-size: 7pt; line-height: 4.6mm; text-align: center; overflow: hidden; }
+.plan .need { display: grid; grid-template-columns: 22mm 1fr; margin-top: 2mm; padding-top: 2mm; border-top: 1px solid var(--hair); font-size: 9pt; }
+.plan .need > span:first-child { color: var(--grey); font-size: 7.5pt; padding-top: 0.5mm; }
+
+.plan .blk { margin-top: 6mm; padding-top: 3mm; border-top: 1px solid var(--hair); }
+.plan .blk.list { display: grid; grid-template-columns: 22mm 1fr; }
+.plan .hw { display: grid; grid-template-columns: 9mm 1fr; column-gap: 3mm; }
+.plan .hw .q { text-align: right; }
+.plan .steps-grid { display: grid; row-gap: 2.5mm; }
+.plan .step { display: grid; grid-template-columns: 6mm 1fr 22mm; column-gap: 3mm; }
+.plan .jig { text-align: right; }
+.plan .check-row { display: grid; grid-template-columns: 22mm 1fr; margin-top: 4mm; }
+.plan .pill { display: inline-block; border: 1px solid var(--ink); border-radius: 999px; padding: 0 2.2mm; font-size: 7.5pt; line-height: 1.6; white-space: nowrap; }
+.plan .stations { margin-top: 5mm; padding-top: 3mm; border-top: 1px solid var(--hair); }
+.plan .svals { font-size: 8.5pt; line-height: 1.5; margin-top: 1mm; }
+
+.plan .ticks { display: flex; flex-wrap: wrap; gap: 3mm 8mm; margin-top: 4mm; }
+.plan .ticks > div { display: flex; align-items: center; gap: 2.5mm; }
+.plan .tick { width: 4.5mm; height: 4.5mm; border: 1px solid var(--ink); display: inline-block; }
+.plan .sign { display: grid; grid-template-columns: 70mm 40mm; gap: 9mm; margin-top: 14mm; }
+.plan .sign .line { border-bottom: 1px solid var(--ink); height: 1px; margin-bottom: 1.5mm; }
+
+@page { size: A4; margin: 0; }
