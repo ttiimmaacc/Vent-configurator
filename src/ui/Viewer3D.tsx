@@ -5,7 +5,7 @@ import * as THREE from 'three';
 import type { Design, Part, Prism } from '../engine';
 import { r1, speciesOf } from '../engine';
 import { prismGeometry, tint } from './geometry';
-import { arSupported, viewInAr } from './ar';
+import { ArSheet } from './ArSheet';
 
 export type ViewName = 'front' | 'rear' | 'iso';
 
@@ -92,15 +92,7 @@ export function Viewer3D({ design, stale }: { design: Design; stale: boolean }) 
   const [explode, setExplode] = useState(0);
   const [wall, setWall] = useState(false);
   const [selected, setSelected] = useState<string | null>(null);
-  const [arState, setArState] = useState<'idle' | 'busy' | 'downloaded' | 'failed'>('idle');
-  const openAr = async () => {
-    setArState('busy');
-    try {
-      setArState((await viewInAr(design)) === 'ar' ? 'idle' : 'downloaded');
-    } catch {
-      setArState('failed');
-    }
-  };
+  const [arOpen, setArOpen] = useState(false);
   const color = speciesOf(design.params.species).color;
   const size = Math.max(design.overall.w, design.overall.h);
   const base = size * 0.3 + 20;
@@ -146,27 +138,12 @@ export function Viewer3D({ design, stale }: { design: Design; stale: boolean }) 
         <label className="check-inline">
           <input type="checkbox" checked={wall} onChange={(e) => setWall(e.target.checked)} /> Wall
         </label>
-        <button className="ar-btn" onClick={openAr} disabled={arState === 'busy'} title="Places the vent on a wall at real size using the iPhone or iPad camera">
-          {arState === 'busy' ? 'Preparing…' : 'View in your space'}
+        <button className="ar-btn" onClick={() => setArOpen(true)}>
+          View in your space
         </button>
       </div>
 
-      {arState === 'downloaded' && (
-        <div className="viewer-note" role="status">
-          AR view needs Safari on an iPhone or iPad. A USDZ file of this vent was downloaded instead{arSupported() ? '' : '; open this page on your phone to place it on a wall'}.
-          <button className="link" onClick={() => setArState('idle')}>
-            Dismiss
-          </button>
-        </div>
-      )}
-      {arState === 'failed' && (
-        <div className="viewer-note" role="alert">
-          The AR model could not be created.
-          <button className="link" onClick={() => setArState('idle')}>
-            Dismiss
-          </button>
-        </div>
-      )}
+      {arOpen && <ArSheet design={design} onClose={() => setArOpen(false)} />}
       {stale && <div className="viewer-stale">Showing the last valid design. Fix the issues listed on the left to update it.</div>}
 
       <div className="viewer-info">

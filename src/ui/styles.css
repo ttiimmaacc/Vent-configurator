@@ -103,7 +103,29 @@ button.link:hover { text-decoration-thickness: 2px; }
 .slider-inline, .check-inline { display: flex; align-items: center; gap: 6px; font-size: 13px; }
 .slider-inline input { width: 120px; accent-color: var(--accent); }
 .ar-btn { padding: 5px 11px; background: var(--ink); color: #fff; border-color: var(--ink); }
-.viewer-note { position: absolute; top: 62px; left: 12px; max-width: min(380px, calc(100% - 24px)); background: #fff; border: 1px solid var(--line); border-radius: 9px; padding: 8px 12px; font-size: 12.5px; line-height: 1.45; display: grid; gap: 4px; }
+.sheet-backdrop { position: fixed; inset: 0; z-index: 50; background: rgba(30, 28, 25, 0.45); display: flex; align-items: flex-end; justify-content: center; }
+.sheet { background: var(--surface); width: min(520px, 100%); max-height: 92dvh; overflow-y: auto; border-radius: 14px 14px 0 0; padding: 18px 18px calc(18px + env(safe-area-inset-bottom)); display: grid; gap: 12px; }
+.sheet h2 { margin: 0; font-size: 18px; }
+.sheet h3 { margin: 0 0 6px; font-size: 13px; }
+.sheet p { margin: 0; line-height: 1.45; }
+.sheet fieldset { border: 0; padding: 0; margin: 0; display: grid; gap: 8px; }
+.sheet legend { font-weight: 650; font-size: 13px; padding: 0; margin-bottom: 6px; }
+.choice { display: flex; gap: 10px; align-items: flex-start; padding: 10px 12px; border: 1px solid var(--line); border-radius: 9px; cursor: pointer; }
+.choice:has(input:checked) { border-color: var(--accent); background: #f1f6f4; }
+.choice input { margin-top: 3px; accent-color: var(--accent); }
+.choice span { display: grid; gap: 2px; }
+.choice b { font-weight: 600; }
+.choice small { color: var(--muted); font-size: 12.5px; line-height: 1.4; }
+.sheet-field { display: grid; grid-template-columns: 1fr 120px; gap: 4px 10px; align-items: center; }
+.sheet-field .hint { grid-column: 1 / -1; }
+.hint.bad, .sheet-note.bad { color: var(--error); }
+.sheet-steps { background: var(--bg); border-radius: 9px; padding: 12px 14px; }
+.sheet-steps ol { margin: 0 0 8px; padding-left: 20px; display: grid; gap: 6px; line-height: 1.45; }
+.sheet-note { background: #fbf2dc; color: var(--warn); border-radius: 7px; padding: 8px 10px; font-size: 12.5px; }
+.sheet-actions { display: flex; gap: 8px; justify-content: flex-end; }
+.sheet-actions button { padding: 10px 16px; }
+.sheet-actions .primary { flex: 1; }
+@media (min-width: 700px) { .sheet-backdrop { align-items: center; } .sheet { border-radius: 14px; } }
 .viewer-info { position: absolute; left: 12px; bottom: 12px; display: grid; gap: 2px; background: rgba(255, 255, 255, 0.92); border: 1px solid var(--line); border-radius: 9px; padding: 8px 12px; font-size: 13px; max-width: min(360px, calc(100% - 24px)); }
 .viewer-stale { position: absolute; top: 12px; right: 12px; max-width: 260px; background: #fbf2dc; color: var(--warn); border-radius: 7px; padding: 8px 10px; font-size: 12.5px; }
 
