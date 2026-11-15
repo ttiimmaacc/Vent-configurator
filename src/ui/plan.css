@@ -6,6 +6,9 @@
   --grey: #949494;
   --hair: #cccccc;
   --fill: #efefef;
+  /* Browsers drop background colours when printing unless told otherwise. The cut-list bars are background fills. */
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
   color: var(--ink);
   font-family: var(--font-text);
   font-weight: 400;
