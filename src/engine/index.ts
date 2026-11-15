@@ -6,3 +6,5 @@ export type { Instructions, InstructionSet, Step } from './instructions';
 export { allDrawings, frontDrawing, sectionDrawing, detailDrawing } from './drawings';
 export type { Drawing, DShape, DDim } from './drawings';
 export { cutListCsv, partsCsv, stockCsv, materialsCsv, toCsv } from './csv';
+export { BUILT_IN_PRESETS } from './presets';
+export type { Preset } from './presets';

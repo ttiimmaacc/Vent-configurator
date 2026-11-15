@@ -1,12 +1,10 @@
 import { useState } from 'react';
-import { DEFAULT_PARAMS, computeDesign } from '../engine';
-import type { Params } from '../engine';
+import { BUILT_IN_PRESETS, DEFAULT_PARAMS, computeDesign } from '../engine';
+import type { Params, Preset } from '../engine';
 
 const KEY = 'sauna-vent-presets-v1';
-interface Preset {
-  name: string;
-  params: Params;
-}
+/** Select values for built-ins carry this prefix so a saved preset may share a built-in's name. */
+const BUILT_IN = 'builtin:';
 
 function load(): Preset[] {
   try {
@@ -43,7 +41,7 @@ export function Presets({ params, valid, onLoad }: { params: Params; valid: bool
   };
   const pick = (n: string) => {
     setCurrent(n);
-    const preset = presets.find((p) => p.name === n);
+    const preset = n.startsWith(BUILT_IN) ? BUILT_IN_PRESETS.find((p) => BUILT_IN + p.name === n) : presets.find((p) => p.name === n);
     if (!preset) return;
     // Presets saved by an older version may lack newer fields, so fill those from the defaults.
     const merged = { ...DEFAULT_PARAMS, ...preset.params };
@@ -55,14 +53,25 @@ export function Presets({ params, valid, onLoad }: { params: Params; valid: bool
       <label htmlFor="preset-select">Presets</label>
       <div className="row">
         <select id="preset-select" value={current} onChange={(e) => pick(e.target.value)}>
-          <option value="">{presets.length ? 'Load a preset…' : 'No presets yet'}</option>
-          {presets.map((p) => (
-            <option key={p.name} value={p.name}>
-              {p.name}
-            </option>
-          ))}
+          <option value="">Load a preset…</option>
+          <optgroup label="Built in">
+            {BUILT_IN_PRESETS.map((p) => (
+              <option key={p.name} value={BUILT_IN + p.name}>
+                {p.name}
+              </option>
+            ))}
+          </optgroup>
+          {presets.length > 0 && (
+            <optgroup label="Saved in this browser">
+              {presets.map((p) => (
+                <option key={p.name} value={p.name}>
+                  {p.name}
+                </option>
+              ))}
+            </optgroup>
+          )}
         </select>
-        {current && (
+        {current && !current.startsWith(BUILT_IN) && (
           <button
             aria-label={`Delete preset ${current}`}
             title="Delete this preset"
@@ -97,7 +106,7 @@ export function Presets({ params, valid, onLoad }: { params: Params; valid: bool
           disabled={!valid}
           title={valid ? undefined : 'Fix the issues first'}
           onClick={() => {
-            setName(current);
+            setName(current.startsWith(BUILT_IN) ? '' : current);
             setNaming(true);
           }}
         >

@@ -48,7 +48,7 @@ Fixed grilles only. Adjustable (closable) mechanisms are not modelled yet.
 
 - **Edit, then save.** The controls edit a draft and the 3D view previews it live. Press **Save and update plans** to regenerate the drawings, cut list, stock layout, instructions, build plan and CSVs.
 - **Issues point at their inputs.** An error or warning highlights the inputs that cause it. Most errors offer a one-click fix.
-- **Presets.** Save the current settings under a name and load them later. Presets and the saved design are kept in the browser.
+- **Presets.** Load a built-in preset, or save the current settings under a name and load them later. Built-in presets live in `src/engine/presets.ts`; your own presets and the saved design are kept in the browser.
 - **View in your space.** On an iPhone or iPad in Safari, this shows the vent at real size through the camera, using AR Quick Look. Either set its height above the floor and slide it to the wall (quickest), or stick it straight to a wall. Red alignment marks help line it up. It shows the design as it stands when you tap; other devices download a USDZ file instead.
 - **Linkable tabs.** Add `#drawings`, `#cut`, `#stock`, `#steps` or `#plan` to the address to open a tab directly.
 

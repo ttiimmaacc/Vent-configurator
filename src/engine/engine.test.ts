@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { DEFAULT_PARAMS, RULES, allDrawings, buildInstructions, computeDesign, cutListCsv, r1 } from './index';
+import { BUILT_IN_PRESETS, DEFAULT_PARAMS, RULES, allDrawings, buildInstructions, computeDesign, cutListCsv, r1 } from './index';
 import type { Design, Params } from './index';
 
 const make = (over: Partial<Params> = {}) => computeDesign({ ...DEFAULT_PARAMS, ...over });
@@ -315,5 +315,24 @@ describe('issue fixes and related inputs', () => {
       }
       expect(d.ok, JSON.stringify(over) + ' -> ' + errors(d).map((e) => e.message).join(' | ')).toBe(true);
     }
+  });
+});
+
+describe('built-in presets', () => {
+  it('are all valid designs with unique names', () => {
+    expect(new Set(BUILT_IN_PRESETS.map((p) => p.name)).size).toBe(BUILT_IN_PRESETS.length);
+    for (const p of BUILT_IN_PRESETS) {
+      const d = computeDesign(p.params);
+      expect(errors(d), p.name).toEqual([]);
+    }
+  });
+
+  it('Flat Slat Mitred is a 330 square, single-section vent with level louvres and mitred corners', () => {
+    const d = computeDesign(BUILT_IN_PRESETS.find((p) => p.name === 'Flat Slat Mitred')!.params);
+    expect(d.overall).toEqual({ w: 330, h: 330, t: 18 });
+    expect(d.cells.length).toBe(1);
+    expect(d.louvre!.angle).toBe(0);
+    expect(d.params.joinery).toBe('mitre');
+    expect(d.rebate).toEqual({ width: 15, depth: 12 });
   });
 });
